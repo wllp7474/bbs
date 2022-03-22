@@ -1,0 +1,299 @@
+一、常用基本命令了解（必记）
+<1>ls  显示当前目录下的文件及目录
+参数：
+	 -a  显示所有的文件，包括隐藏文件（以.开头的文件）
+	 -l  显示当前目录下的文件及目录属性
+	 -lh 显示当前目录下的文件及目录属性，并且K,M,G为单位显示文件大小
+	 
+	 
+<2>pwd 显示当前工作目录所在的绝对路径
+
+ 
+<3>cd 切换工作目录 	 
+常用：		
+		cd + 回车  切换到用户主目录
+
+	  cd  + 路径名称  切换到指定路径下面
+	  例如：cd  /home/chw/work
+	  
+	  cd .. 切换到上一层目录
+	  
+	  cd ～ 切换到用户主目录
+	  
+	  cd  - 切换到前一个工作目录
+	  
+<4>mkdir 新建一个目录
+常用：
+
+a.在当前目录下新建一个目录
+mkdir /home/chw/dir
+
+b.在当前目录下递归创建多个目录
+mkdir -p /home/chw/one/two/three
+
+
+<5>cp 拷贝源文件或者目录到指定路径
+常用：
+
+a.将普通文件拷贝到指定的路径	  
+sudo cp /home/ubuntu/hello.c  /home/chw/one
+
+b.将目录拷贝到指定的路径
+sudo cp /home/ubuntu/dir  /home/chw  -a
+
+c.实现备份的功能，将源文件备份一次
+sudo cp test.c  test_bak.c
+	 
+d.实现备份的功能，将目录备份一次 
+sudo cp dir  dir_bak  -a
+
+<5>touch 新建文件
+常用：
+		touch test1.c test2.c test3.c
+		
+<6>cat  显示文件的内容
+常用：
+		cat /home/chw/test.c
+		
+参数：-n 加行号来显示内容
+		cat -n /home/chw/test.c
+		
+<7>mv  移动源文件或者目录到指定的位置	 
+常用：
+
+a.将普通文件移动到指定位置
+  mv /home/chw/test.c /mnt/hgfs/share
+  
+b.将文件实现重命名的功能
+ mv  test.c  hello.c
+ 
+c.将目录实现重命名的功能
+ mv  dir   dir_list
+ 
+<8>rm  删除一个或者多个文件或目录，物理删除，不可恢复
+常用：
+   rm  test.c
+   
+参数： -rf   强制删除文件或者目录
+例如:  rm -rf dir_list
+
+<9>file 查看文件的类型
+例如：
+
+a.查看普通文件类型	
+	file test.c
+
+b.查看目录的类型
+  file  dir_list
+	
+	
+作业：
+1.将/etc/passwd文件拷贝到用户主目录
+
+2.将用户主目录下的passwd文件备份为passwd-bak
+
+3.在用户主目录下新建目录test_dir
+
+4.将passwd-bak移动到test_dir目录下
+
+5.将test_dir目录下的passwd-bak文件改名为passwd
+
+6.将test_dir目录拷贝到你的/home/ubuntu/Desktop下
+
+7.将/home/ubuntu/Desktop下的test_dir目录改名为dir
+	 
+	 
+	 
+	 
+二、深入命令的学习
+<1>grep  从文件中搜索字符串
+
+例如： 在/etc/passwd中查找“chw”
+grep "chw" /etc/passwd
+
+常用参数：
+
+a.搜索file文件中,以"string"开头的行
+例如：	grep "^string" file 
+
+b.搜索file文件中,以"string"结尾的行
+例如： grep "^string$" file 
+
+c.搜索file文件中，只包含“string”的行
+例如：grep "^string$" file	 
+	 
+d.在搜索文件的时候，同时显示行号
+例如：grep "chw" -n /etc/passwd
+	 
+	 
+习惯的用法：
+e.在当前目录下所有的文件中搜索"main"(包括子目录)
+grep "main" * -nR
+
+练习：1.在用户主目录新建一个hello.c文件。
+		  2.然后以带行号的方式搜索一下，我们的world单词。
+		
+<2>find ：在指定路径下搜索文件
+常用：
+find 路径 -name  文件名
+
+例如：find /home/chw -name test.c  
+	 
+	 
+<3>管道链接符"|" ->将一个命令的输出当作另一个命令的输入
+例如：cat /etc/passwd | grep "chw" 
+			ls  /usr/include | grep "stdio.h"
+			
+<4>head 显示文件开头的内容
+
+a.查看/etc/passwd 文件开头10行
+例如：head -10 /etc/passwd
+
+<5>tail 显示文件尾部指定的行数
+例如：tail -1 /etc/passwd
+
+练习：如何获得/etc/passwd中第34行的信息
+
+<6>cut ： 字符串裁剪函数
+注意：一般与管道联合使用
+
+格式：
+cut -d "分割字符" -f 字段
+
+例如：
+tail -1 /etc/passwd | cut -d ":" -f 1,3,4	 
+	 
+grep "chw" /etc/passwd | cut -d ":" -f 1,3,4	 
+	 
+	
+练习：如何获取当前用户在/etc/passwd中的行号
+ 
+	 
+<7>	diff比较两个文件的大小
+常用：
+		diff file1 file2
+
+注：显示的结果不直观 
+    a表示追加，d表示删除,c表示更改
+    <表示属于第一个文件
+    >表示属于第二个文件
+    
+vim 使用小技巧：
+vim  test1.c test2.c -d  直观的对比，哪里不一样
+
+
+<8>wc ：统计 行数 单词的个数 字节数
+例如：
+a.txt
+｛
+123
+abc
+789 ABCD
+｝
+
+参数：
+-l   显示一个文件的行数
+-w   显示一个文件的单词个数
+-c   显示一个文件的字节数
+
+
+
+三、其他命令了解
+<1>清屏
+快捷键  ctrl + l
+
+<2>查看日期及时间
+date    显示时间日期
+	
+	
+<3>echo 显示一行文本	
+
+a.输出单个单词
+echo 123
+echo 456
+
+b.输出字符串
+echo "hello world"
+echo hello world
+
+区别：""表示一个字符串，若是不扩起来表示多个字符串
+
+<4>which 查找命令所在的路径
+例如：which  ls
+      which  pwd
+
+注：不是所有的命令都能找到，内嵌的命令找不到 
+例如：which alias 
+      which cd    都找不到   
+      
+
+
+      
+四、系统维护命令详解     
+<1>shutdown关机命令
+常用：
+
+a.5分钟后关机
+sudo shutdown +5
+
+b.立即关机
+sudo shutdown -h now
+
+c.立即重启
+sudo shutdown -r now
+sudo reboot
+  
+     
+<2>修改密码passwd
+
+a.修改用户密码passwd
+sudo passwd + 用户名
+例如：sudo passwd chw 
+
+
+<3>su临时切换用户
+例如：
+
+a.切换到root用户
+su  + 回车
+
+a.切换普通用户
+su + 用户名
+
+注：我们第一切换root用户的时候可能会提示密码错误
+
+<4>df 查看磁盘空间的使用情况
+常用：
+		df  -Th
+
+
+<5>mount挂载文件系统，文件系统挂载后才能进行使用
+用法：挂载本地设备
+
+sudo mount 设备文件 挂载点目录
+
+例如：sudo mount /dev/sdb1 /mnt/udisk
+
+
+<6>umount 卸载设备
+
+sudo umount 设备文件
+例如：sudo mount /dev/sdb1
+
+练习：1.同学们自己来练习把U盘挂载到电脑上去
+      2.把/目录挂载到 /mnt/udisk中去
+      
+<7>du 查看目录或者文件使用磁盘块数(占用磁盘空间的大小)，常用于估算目录或者文件大小
+参数：
+ -s  显示当前目录的大小
+ -h  以K,M,G为单位显示
+ 
+例如：查看用户主目录占用磁盘块数
+
+du -sh  /home/chw  显示我们用户主目录占用的磁盘块数
+
+
+五、用户管理
+详解《用户管理详解》
+
+
